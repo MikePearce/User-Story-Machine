@@ -22,16 +22,7 @@
             endforeach;
         ?>
     </div>
-    <div id="themes" class="col">
-        <h2>Themes</h2>
-        <table cellpadding="2" cellspacing="2">
-        <? foreach ($themes AS $theme_id => $name) : ?>
-            <tr><td><a href="/stories/allstories/<?= $theme_id; ?>"><?= $name; ?></a></td><td><a href="/prioritise/index/<?= $theme_id; ?>">Prioritise</a></td></tr>
-        <? endforeach; ?>
-        </table>
-        
-
-    </div>
+   
 </div>
 </body>
 </html>

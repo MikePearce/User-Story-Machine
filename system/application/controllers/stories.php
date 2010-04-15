@@ -37,6 +37,11 @@ class Stories extends Controller {
                      'rules'   => 'trim'
                   ),
                 array(
+                     'field'   => 'remaining',
+                     'label'   => 'Remaining',
+                     'rules'   => 'trim'
+                  ),
+                array(
                      'field'   => 'nickname',
                      'label'   => 'Nickname',
                      'rules'   => 'trim|required'
@@ -69,6 +74,7 @@ class Stories extends Controller {
                            'acceptanceCriteria' => $ja,
                            'nickname'           => $this->input->post('nickname'),
                            'estimate'           => $this->input->post('estimate'),
+                           'remaining'          => $this->input->post('estimate'),
                            'date_modified'      => date('Y-m-d H:i:s'),
                            'date_added'         => date('Y-m-d H:i:s')
                         );
@@ -172,6 +178,11 @@ class Stories extends Controller {
         {
             $this->allStories('allnicks');
         }
+
+        function plan()
+        {
+            $this->allStories('plan');
+        }
         
         function allstories($view = 'showall', $ids = FALSE)
         {
@@ -180,34 +191,36 @@ class Stories extends Controller {
             $this->load->helper('form');
 
             // Set the orderby
-            $data['dir']            = $this->input->get('dir', TRUE);
-            $data['orderby']        = $this->input->get('orderby', TRUE);
+
+            if ($view == 'plan')
+            {
+                $data['dir']            = 'ASC';
+                $data['orderby']        = 'priorityOrder';
+            }
+            else {
+                $data['dir']            = $this->input->get('dir', TRUE);
+                $data['orderby']        = $this->input->get('orderby', TRUE);
+            }
+            
             $data['dirmod']         = $this->input->get('dirmod', TRUE);
             $data['resourceHours']  = $this->input->get('resourceHours', TRUE);
             $data['peeps']          = $this->input->get('peeps', TRUE);
             $data['hoursaday']      = $this->input->get('hoursaday', TRUE);
             $data['delivery']       = $this->input->get('delivery', TRUE);
             $data['workHours']      = FALSE;
+            $data['estOrRem']       = $this->input->get('estOrRem', TRUE);;
 
             // If we've got a delivery date, workout how many days
+            // @todo - workout EXACT weekends.
             if ($data['delivery'])
             {
-                $now = time();
-                $then = strtotime($data['delivery']);
-                $timespan = $then - $now;
-                $numberOfDays = round($timespan / 86400);
-                if ($numberOfDays > 7)
-                {
-                    $numberOfWeeks = ceil($numberOfDays / 7);
-                    $numberOfNonDays = $numberOfWeeks * 2;
-                    $numberOfWorkDays = $numberOfDays - $numberOfNonDays;
-                    $workHours = $numberOfWorkDays * $data['peeps'] * $data['hoursaday'];
-                }
-                else {
-                    $workHours = $numberOfDays * $data['peeps'] * $data['hoursaday'];
-                }
-                
-                $data['workHours'] = $workHours;
+                $current = time();
+                $dateTime = explode("/", $data['delivery']);
+                $then = mktime(0,0,0, $dateTime[1], $dateTime[0], $dateTime[2]);
+               
+                $data['workHours'] = $this->howManyWorkDays($then) //No. of workdays
+                                    * $data['peeps'] // Times number of people
+                                    * $data['hoursaday']; // Times hours a day
             }
 
 
@@ -274,6 +287,42 @@ class Stories extends Controller {
             $this->load->view($view, $data);
             $this->load->view('siteFooter');
         }
+        /**
+         * @desc    Return how many non-weekend days between two dates
+         * @param   timestamp $toDate
+         * @param   timestamp $fromDate
+         * @author  Mike Pearce <mike@mikepearce.net>
+         * @return  integer
+         **/
+        function howManyWorkDays($toDate, $fromDate = FALSE)
+        {
+            // The time RIGHT NOWs
+            if (!$fromDate) $fromDate = time();
+            $numberOfDays = 0;
+
+            // Is it a timestamp? Maybe.
+            if (
+                is_int($toDate) AND
+                $toDate > $fromDate
+            )
+            {
+                // While the current time is less than the time in the future
+                do {
+                    // Add 1 day to the current time
+                    $fromDate = strtotime("+1 day", $fromDate);
+
+                    // If that day is a WEEKDAY, increment.
+                    if (date("N", $fromDate) < 6)
+                    {
+                        $numberOfDays++;
+                    }
+                } while($fromDate < $toDate);
+            }
+            // Number of work days between now and then
+            return $numberOfDays;
+
+        }
+
 
         function edit()
         {
@@ -346,6 +395,12 @@ class Stories extends Controller {
                 $this->db->update('stories', $data);
                 $data['message'] = '<div class="message">That story has been updated.</div>';
 
+                $this->_doRemaining(
+                            $this->input->post('id'),
+                            $this->input->post('remaining')
+                        );
+
+
             }
             $seg = $this->uri->segment(3);
             $id = ( FALSE !== $seg  ? $seg : $this->input->post('id'));
@@ -360,6 +415,36 @@ class Stories extends Controller {
             $this->load->view('siteFooter');
         }
 
+        private function _doRemaining($id, $remaining)
+        {
+            $data = array('remaining' => $remaining);
+            $this->db->where('id', $id);
+            $this->db->update('stories', $data);
+
+            // Also, if we've modified the remaining, keep a historial log.
+            $historical_json = $this->Story_model->getHistoricalRemaining($id);
+
+            if (!$array = json_decode($historical_json, TRUE))
+            {
+                $array = array();
+            }
+            array_push($array, array(date('Y-m-d: H:i:s') => $remaining));
+
+            $json = json_encode($array);
+            $this->Story_model->updateHistoricalRemaining($json, $id);
+        }
+
+        public function saveremaining()
+        {
+            $id = $this->input->post('id');
+            $remaining = $this->input->post('value');
+            $id = substr($id, 4);
+
+            // Do historical and current
+            $this->_doRemaining($id, $remaining);
+
+            print $remaining;
+        }
 
 }
 

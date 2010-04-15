@@ -13,9 +13,26 @@
     }
 
 ?>
+<style type="text/css">
+    input, textarea, select {
+        font-family: verdana;
+        font-size: 1.2em;
+        padding: 3px;
+        width: 500px;
+}
+textarea{
+    width: 500px;
+    height: 170px;
+}
+input.estimate {
+    width: 50px;
+}
+
+</style>
+
         <label for="storyName">Theme:</label><br /><br />
         <?= form_dropdown('themes', $themes, $selected_theme); ?>
-         or add new:
+         <br /><br />or add new: <br /><br />
         <input
             type="text"
             name="themeName"
@@ -41,14 +58,12 @@
             name="iNeed"
             id="iNeed"
             cols="40"
-		style="width:350px;height:60px;"
             rows="2"><?php echo set_value('iNeed', (isset($story[0]->iNeed) ? $story[0]->iNeed : '')); ?></textarea><br /><br />
         <label for="soThat">So that ...</label><br />
         <textarea 
             name="soThat"
             id="soThat"
             cols="40"
-		style="width:350px;height:60px;"
             rows="2"><?php echo set_value('soThat', (isset($story[0]->soThat) ? $story[0]->soThat : '')); ?></textarea><br /><br />
         <label for="soThat">Acceptance Criteria</label><br />
         <p><em>Enter each criteria on a new line</em></p>
@@ -56,7 +71,6 @@
             name="acceptanceCriteria"
             id="acceptanceCriteria"
             cols="40"
-		style="width:350px;height:100px;"
             rows="5"><?
                 $acceptance = '';
                 if (isset($story[0]->acceptanceCriteria))
@@ -71,8 +85,17 @@
         <input
             type="text"
             name="estimate"
+            class="estimate"
             value="<?php echo set_value('estimate', (isset($story[0]->estimate) ? $story[0]->estimate : '')); ?>"
             id="estimate"
+        /><br /><br />
+  <label for="nickname">Remaining</label>:
+        <input
+            type="text"
+            name="remaining"
+            class="estimate"
+            value="<?php echo set_value('remaining', (isset($story[0]->remaining) ? $story[0]->remaining : '')); ?>"
+            id="remaining"
         /><br /><br />
 <?
     if (isset($edit) AND $edit)

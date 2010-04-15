@@ -60,7 +60,7 @@ label {
 }
 .col {
     float: left;
-    width: 350px;
+    width: 550px;
     border-right: 1px solid #000;
     padding: 20px;
 }
@@ -123,7 +123,7 @@ label.small {
 <ul class="hidePrint">
     <li><a href="/">Home</a> |</li>
     <li><a href="/stories">Add a story</a> |</li>
-    <li><a href="/stories/allstories">Show all stories</a> |</li>
-    <li><a href="/stories/allnicks">Show all stories as nicknames with estimates</a> |</li>
+    <li><a href="/stories/allnicks">Show all stories</a> |</li>
+    <li><a href="/stories/plan">Plan and prioritise</a> |</li>
     <!-- <li><a href="/prioritise/">Let's prioritise!</a></li> -->
 </ul>

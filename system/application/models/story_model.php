@@ -47,6 +47,7 @@ class Story_model extends Model {
          $query = $this->db->query('SELECT
                                         stories.nickname,
                                         stories.estimate,
+                                        stories.remaining,
                                         stories.themeId,
                                         stories.id,
                                         themes.priorityOrder
@@ -132,6 +133,7 @@ class Story_model extends Model {
                             stories.soThat,
                             stories.acceptanceCriteria,
                             stories.estimate,
+                            stories.remaining,
                             stories.nickname, 
                             stories.done,
                             stories.priorityOrder,
@@ -200,6 +202,7 @@ class Story_model extends Model {
                             stories.soThat,
                             stories.acceptanceCriteria,
                             stories.estimate,
+                            stories.remaining,
                             stories.nickname,
                             stories.done')
                 ->from('stories')
@@ -228,6 +231,7 @@ class Story_model extends Model {
                             stories.soThat,
                             stories.acceptanceCriteria,
                             stories.estimate,
+                            stories.remaining,
                             stories.nickname,
                             stories.done')
                 ->from('stories')
@@ -265,5 +269,25 @@ class Story_model extends Model {
 
         $q = $this->db->query($query);
         return $this->db->affected_rows();
+    }
+
+    public function getHistoricalRemaining($id)
+    {
+        $this->db->select('historicalRemaining')
+                 ->from('stories')
+                ->where('id', $id);
+        
+        $query = $this->db->get();
+        $row = $query->result();
+
+        return $row[0]->historicalRemaining;
+
+    }
+
+
+    public function updateHistoricalRemaining($array,$id)
+    {
+        $sql = "UPDATE stories SET historicalRemaining = '". $array ."' WHERE id = '". $id ."'";
+        return $this->db->query($sql);
     }
 }
