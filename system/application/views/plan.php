@@ -93,13 +93,13 @@ $(document).ready(function(){
      </div>
     <div style="float: left; margin-left: 10px;" id="delivery_date_estimate">
            <?= form_open('stories/plan', array('method'=>'GET')); ?>
-            Peeps:<input name="peeps" style="width: 40px;" value="<?= $peeps; ?>" />
-            Hours-a-day:<input name="hoursaday" style="width: 40px;" value="<?= $hoursaday; ?>" />
+            Peeps:<input name="peeps" style="width: 40px;" value="<?= ($peeps != '' ? $peeps : '3'); ?>" />
+            Hours-a-day:<input name="hoursaday" style="width: 40px;" value="<?= ($hoursaday != '' ? $hoursaday : '6') ; ?>" />
             Delivery Date:<input name="delivery" id="datepicker" style="width: 70px;" value="<?= $delivery; ?>" />
             <input type="hidden" name="orderby" value="<?= $orderby; ?>" />
             <input type="hidden" name="dir" value="<?= $origDir; ?>" />
             <input type="hidden" name="theme" value="<?= $theme; ?>" />
-            Est. or Remaining: <select name="estOrRem" id="estOrRem"><option value="est"<?= ($estOrRem == 'est' ? ' selected' : ''); ?>>Est.</option><option value="rem"<?= ($estOrRem == 'rem' ? ' selected' : ''); ?>>Remaining</option></select>
+            Est. or Remaining: <select name="estOrRem" id="estOrRem"><option value="rem"<?= ($estOrRem == 'rem' ? ' selected' : ''); ?>>Remaining</option><option value="est"<?= ($estOrRem == 'est' ? ' selected' : ''); ?>>Est.</option></select>
             <input type="submit" value="set delivery" />
         <?= form_close(); ?>
     </div>
@@ -184,7 +184,7 @@ $(document).ready(function(){
         <td style="cursor:move;">X</td>
         <td><?= $story->themeName; ?></td>
         <td><?= $story->priorityOrder; ?></td>
-        <td><label class="small" for="stories<?= $story->id; ?>" id="x<?= $cum; ?>"><?= $story->nickname; ?></label>
+        <td><label class="small" for="stories<?= $story->id; ?>" id="x<?= $cum; ?>"><span class="<?= ($story->criticalPath == '1' ? 'critical' : 'non-critical'); ?>"><?= $story->nickname; ?></span></label>
             <script type="text/javascript">
             // Selects one or more elements to assign a simpletip to
             $("#x<?= $cum; ?>").simpletip({

@@ -116,6 +116,12 @@ label {
 label.small {
     font-size: 1.1em;
 }
+.critical {
+    color: #000;
+}
+.non-critical {
+    color: #c3c3c3;
+}
 </style>
 </head>
 <body>

@@ -66,6 +66,14 @@ class Stories extends Controller {
                 else {
                     $themeId = $this->input->post('themes');
                 }
+                // Critical Path?
+                if ($this->input->post('criticalPath'))
+                {
+                    $critPath = '1';
+                }
+                else {
+                    $critPath = '0';
+                }
                 $data = array(
                            'themeId'            => $themeId,
                            'asA'                => $this->input->post('asA'),
@@ -75,6 +83,7 @@ class Stories extends Controller {
                            'nickname'           => $this->input->post('nickname'),
                            'estimate'           => $this->input->post('estimate'),
                            'remaining'          => $this->input->post('estimate'),
+                           'criticalPath'       => $critPath,
                            'date_modified'      => date('Y-m-d H:i:s'),
                            'date_added'         => date('Y-m-d H:i:s')
                         );
@@ -379,7 +388,14 @@ class Stories extends Controller {
                     $themeId = $this->input->post('themes');
                 }
 
-
+                // Critical Path?
+                if ($this->input->post('criticalPath'))
+                {
+                    $critPath = '1';
+                }
+                else {
+                    $critPath = '0';
+                }
                 $data = array(
                            'themeId'            => $themeId,
                            'asA'                => $this->input->post('asA'),
@@ -388,6 +404,7 @@ class Stories extends Controller {
                            'acceptanceCriteria' => $ja,
                            'nickname'           => $this->input->post('nickname'),
                            'estimate'           => $this->input->post('estimate'),
+                           'criticalPath'       => $critPath,
                            'date_modified'      => date('Y-m-d H:i:s')
                         );
 

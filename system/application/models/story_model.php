@@ -50,6 +50,7 @@ class Story_model extends Model {
                                         stories.remaining,
                                         stories.themeId,
                                         stories.id,
+                                        stories.criticalPath,
                                         themes.priorityOrder
                                     FROM
                                         stories
@@ -138,6 +139,7 @@ class Story_model extends Model {
                             stories.done,
                             stories.priorityOrder,
                             stories.date_modified,
+                            stories.criticalPath,
                             stories.date_added')
         ->from('stories')
         ->join('themes', 'themes.id = stories.themeid');
@@ -204,6 +206,7 @@ class Story_model extends Model {
                             stories.estimate,
                             stories.remaining,
                             stories.nickname,
+                            stories.criticalPath,
                             stories.done')
                 ->from('stories')
                 ->join('themes', 'themes.id = stories.themeid')
@@ -233,6 +236,7 @@ class Story_model extends Model {
                             stories.estimate,
                             stories.remaining,
                             stories.nickname,
+                            stories.criticalPath,
                             stories.done')
                 ->from('stories')
                 ->order_by('id', 'DESC')

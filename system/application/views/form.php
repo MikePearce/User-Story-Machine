@@ -97,6 +97,14 @@ input.estimate {
             value="<?php echo set_value('remaining', (isset($story[0]->remaining) ? $story[0]->remaining : '')); ?>"
             id="remaining"
         /><br /><br />
+  <label for="criticalPath">Critical Path?</label>:
+        <input
+            type="checkbox"
+            name="criticalPath"
+            class="estimate"
+            <?= (isset($story[0]->criticalPath) AND $story[0]->criticalPath  == 1 ? ' checked="checked"' : ''); ?>
+            id="criticalPath"
+        /><br /><br />
 <?
     if (isset($edit) AND $edit)
     {
