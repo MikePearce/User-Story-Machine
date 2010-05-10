@@ -131,6 +131,7 @@ label.small {
     <li><a href="/">Home</a> |</li>
     <li><a href="/stories">Add a story</a> |</li>
     <li><a href="/stories/allnicks">Show all stories</a> |</li>
+    <li><a href="/stories/alldone">Show all done stories</a> |</li>
     <li><a href="/stories/plan">Plan and prioritise</a> |</li>
     <!-- <li><a href="/prioritise/">Let's prioritise!</a></li> -->
 </ul>

@@ -188,6 +188,11 @@ class Stories extends Controller {
             $this->allStories('allnicks');
         }
 
+        function allDone()
+        {
+            $this->allStories('alldone');
+        }
+
         function plan()
         {
             $this->allStories('plan');
@@ -251,10 +256,10 @@ class Stories extends Controller {
                                     );
             // Set done mode
             // Should it be checked?
-            if ($this->input->post('showDone') == 1)
+            if ($this->input->post('showDone') == 1 OR $view == 'alldone')
             {
                 $data['showDoneChecked'] = TRUE;
-                $this->Story_model->setDone($this->input->post('showDone'));
+                $this->Story_model->setDone(1);
             }
             else {
                 $data['showDoneChecked'] = FALSE;
