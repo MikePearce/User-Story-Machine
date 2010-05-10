@@ -98,7 +98,7 @@ class Stories extends Controller {
 
             // load the form etc
             $data['form'] = $this->load->view('form', $data_for_form, TRUE);
-            $this->load->view('siteHeader');
+            $this->load->view('siteHeader', $data);
             $this->load->view('stories', $data);
             $this->load->view('siteFooter');
 	}
@@ -292,7 +292,7 @@ class Stories extends Controller {
 
             // Sort the view
             $data['themes'] = $this->Story_model->getThemeNames();
-            $this->load->view('siteHeader');
+            $this->load->view('siteHeader', $data);
             $this->load->view($view, $data);
             $this->load->view('siteFooter');
         }
@@ -427,7 +427,7 @@ class Stories extends Controller {
             // load the form etc
             $data1['edit'] = TRUE;
             $data['form'] = $this->load->view('form', $data1, TRUE);
-            $this->load->view('siteHeader');
+            $this->load->view('siteHeader', $data);
             $this->load->view('edit', $data);
             $this->load->view('siteFooter');
         }

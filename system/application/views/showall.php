@@ -23,7 +23,7 @@
 ?>
     
 <div id="indexCard" class="eggs">
-    <h1><?= $story->themeName .": ". $story->nickname; ?> - Estimate [<?= $story->estimate; ?>]</h1>
+    <h1><?= $story->themeName .": ". $story->nickname; ?> - Estimate <sub>(Rem/Est) [<?= $story->remaining; ?>/<?= $story->estimate; ?>]</sub></h1>
     <table cellpadding="3" cellspacing="9">
         <tr>
             <td nowrap><strong>As a ...</strong></td>

@@ -1,6 +1,7 @@
+
 <html>
 <head>
-<title>Welcome to the User Story Machine!</title>
+<title><?= (isset($stories[0]->nickname) ? $stories[0]->nickname : ''); ?> :: Welcome to the User Story Machine!</title>
 
 <style type="text/css">
     img {
