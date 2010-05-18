@@ -120,10 +120,11 @@ class Stories extends Controller {
 
         function markDone($id, $done = TRUE)
         {
+            $this->load->helper('url');
             $this->Story_model->markStoryDone(
                         $id, $done
                     );
-            $this->index();
+             redirect('/stories/plan/', 'refresh');
         }
 
         function multiaction()
